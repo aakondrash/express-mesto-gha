@@ -13,12 +13,14 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove({
-        _id: req.params._id,
+  Card.findOne({ _id: req.params._id })
+      .orFail(() => {
+        return res.status(404).send({message: "Карточка с указанным _id не найдена."});
       })
       .then((card) => {
-        if (!card) return res.status(404).send({message: "Карточка с указанным _id не найдена."})
-        Card.findById({_id: req.params._id});
+          Card.deleteOne(card).then(() =>
+            res.status(200).send({ data: card })
+          );
       })
       .catch((err) => {
         if (err.name === 'NotFoundError') return res.status(404).send({message: "Карточка с указанным _id не найдена."})

@@ -12,13 +12,13 @@ module.exports.createCard = (req, res) => {
       });
 };
 
-module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove({
+module.exports.deleteCard = (req, res) => {
+  Card.findById({
         _id: req.params._id,
       })
       .then((card) => {
-        console.log(card);
-        res.status(200).send({ data: card });
+        if (!card) return res.status(404).send({message: "Карточка с указанным _id не найдена."})
+        Card.findById({_id: req.params._id});
       })
       .catch((err) => {
         if (err.name === 'NotFoundError') return res.status(404).send({message: "Карточка с указанным _id не найдена."})
@@ -27,7 +27,7 @@ module.exports.deleteCard = (req, res, next) => {
       });
 };
 
-module.exports.getAllCards = (req, res, next) => {
+module.exports.getAllCards = (req, res) => {
   Card.find({})
       .populate(['owner', 'likes'])
       .then((card) => {
@@ -39,7 +39,7 @@ module.exports.getAllCards = (req, res, next) => {
       });
 };
 
-module.exports.setCardLike = (req, res, next) => {
+module.exports.setCardLike = (req, res) => {
   Card.findByIdAndUpdate(
         req.params._id,
         { $addToSet: { likes: req.user._id } },

@@ -56,7 +56,7 @@ module.exports.setAvatar = (req, res) => {
       });
 };
 
-module.exports.setProfile = (req, res, next) => {
+module.exports.setProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
         req.user._id,

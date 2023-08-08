@@ -13,7 +13,7 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findById({
+  Card.findByIdAndRemove({
         _id: req.params._id,
       })
       .then((card) => {

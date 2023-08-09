@@ -48,6 +48,7 @@ module.exports.setCardLike = (req, res) => {
         { new: true },
       )
       .then((card) => {
+        if (!card) return res.status(404).send({message: "Передан несуществующий _id карточки."})
         res.status(200).send({ data: card });
       })
       .catch((err) => {
@@ -64,6 +65,7 @@ module.exports.removeCardLike = (req, res) => {
         { new: true }
       )
       .then((card) => {
+        if (!card) return res.status(404).send({message: "Передан несуществующий _id карточки."})
         res.status(200).send(card);
       })
       .catch((err) => {

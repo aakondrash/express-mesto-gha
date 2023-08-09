@@ -44,7 +44,7 @@ module.exports.setAvatar = (req, res) => {
   User.findByIdAndUpdate(
         req.user._id,
         { avatar },
-        { new: true }
+        { new: true, runValidators: true }
       )
       .then((user) => {
         res.status(200).send({ data: user });
@@ -61,7 +61,7 @@ module.exports.setProfile = (req, res) => {
   User.findByIdAndUpdate(
         req.user._id,
         { name, about },
-        { new: true }
+        { new: true, runValidators: true }
       )
       .then((user) => {
         res.status(200).send({ data: user });

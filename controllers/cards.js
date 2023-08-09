@@ -31,7 +31,7 @@ module.exports.deleteCard = (req, res) => {
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
-      .populate(['owner', 'likes'])
+      // .populate(['owner', 'likes'])
       .then((card) => {
         res.status(200).send({ data: card });
       })
@@ -48,6 +48,7 @@ module.exports.setCardLike = (req, res) => {
         { new: true },
       )
       .then((card) => {
+        if (req.params._id.length !== 24) return res.status(400).send({message: "Переданы некорректные данные при создании карточки."})
         if (!card) return res.status(404).send({message: "Передан несуществующий _id карточки."})
         res.status(200).send({ data: card });
       })
@@ -65,6 +66,7 @@ module.exports.removeCardLike = (req, res) => {
         { new: true }
       )
       .then((card) => {
+        if (req.params._id.length !== 24) return res.status(400).send({message: "Переданы некорректные данные при создании карточки."})
         if (!card) return res.status(404).send({message: "Передан несуществующий _id карточки."})
         res.status(200).send(card);
       })

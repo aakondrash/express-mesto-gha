@@ -8,7 +8,7 @@ module.exports.createCard = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') return res.status(400).send({message: " Переданы некорректные данные при создании карточки."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -25,7 +25,7 @@ module.exports.deleteCard = (req, res) => {
       .catch((err) => {
         if (err.name === 'NotFoundError') return res.status(404).send({message: "Карточка с указанным _id не найдена."})
         if (err.name === 'ValidationError' || req.params._id.length != 24) return res.status(400).send({message: "Переданы некорректные данные при создании карточки."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -36,7 +36,7 @@ module.exports.getAllCards = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') return res.status(400).send({message: " Переданы некорректные данные при создании карточки."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -55,7 +55,7 @@ module.exports.setCardLike = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError' || err.name === 'CastError') return res.status(400).send({message: "Переданы некорректные данные для постановки/снятии лайка."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -74,6 +74,6 @@ module.exports.removeCardLike = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError' || err.name === 'CastError') return res.status(400).send({message: "Переданы некорректные данные для постановки/снятии лайка."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };

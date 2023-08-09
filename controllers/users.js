@@ -12,7 +12,7 @@ module.exports.createUser = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') return res.status(400).send({message: "Переданы некорректные данные при создании пользователя."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -23,7 +23,7 @@ module.exports.getAllUsers = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError') return res.status(400).send({message: "Переданы некорректные данные при создании пользователя."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -35,7 +35,7 @@ module.exports.getUserInfo = (req, res) => {
       })
       .catch((err) => {
         if (err.name === 'ValidationError' || err.name === 'CastError') return res.status(400).send({message: "Переданы некорректные данные _id."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -53,7 +53,7 @@ module.exports.setAvatar = (req, res) => {
       .catch((err) => {
         if (err.name === 'NotFoundError') return res.status(404).send({message: "Пользователь по указанному _id не найден."})
         if (err.name === 'ValidationError') return res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 
@@ -70,7 +70,7 @@ module.exports.setProfile = (req, res) => {
       .catch((err) => {
         if (err.name === 'NotFoundError') return res.status(404).send({message: "Пользователь по указанному _id не найден."})
         if (err.name === 'ValidationError') return res.status(400).send({message: "Переданы некорректные данные при обновлении профиля."})
-        return res.status(500).send({message: "Ошибка по умолчанию."})
+        return res.status(500).send({message: "На сервере произошла ошибка."})
       });
 };
 

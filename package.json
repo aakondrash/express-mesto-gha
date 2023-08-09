@@ -9,7 +9,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "author": "",
+  "author": "aakondrash",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",

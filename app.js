@@ -8,7 +8,7 @@ const { PORT = 3000 } = process.env;
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 
-const mestodbUrl = "mongodb://127.0.0.1:27017/mestodb"
+const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
 mongoose.connect(mestodbUrl);
 
 const app = express();

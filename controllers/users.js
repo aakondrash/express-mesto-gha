@@ -30,11 +30,8 @@ module.exports.getAllUsers = (req, res) => {
 module.exports.getUserInfo = (req, res) => {
   User.findById(req.user._id)
       .then((user) => {
-        if (user) {
-          return res.status(200).send({ data: user });
-        } else {
-          return res.status(404).send({message: "Пользователь по указанному _id не найден."});
-        }
+        if (!user) return res.status(404).send({message: "Пользователь по указанному _id не найден."});
+        return res.status(200).send({ data: user });
       })
       .catch((err) => {
         if (err.name === 'ValidationError' || err.name === 'CastError') return res.status(400).send({message: "Переданы некорректные данные _id."})

@@ -1,18 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const {celebrate, Joi} = require('celebrate');
 
 const serverErrorHandler = require('./middlewares/serverErrorHandler');
 const NotFoundError = require('./error_templates/NotFoundError');
 const auth = require('./middlewares/auth');
+
+const {URL_REGEXP_PATTERN} = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 
-const signup = require('./routes/signup');
-const signin = require('./routes/signin');
+const {createUser, login} = require('./controllers/users');
 
 const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
 mongoose.connect(mestodbUrl);
@@ -24,8 +26,30 @@ app.use(
 );
 app.use(express.json());
 
-app.use('/', signup);
-app.use('/', signin);
+app.post(
+  '/signup',
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string().pattern(URL_REGEXP_PATTERN),
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  createUser,
+);
+
+app.post(
+  '/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login,
+);
 
 app.use(auth);
 

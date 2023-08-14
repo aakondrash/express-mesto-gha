@@ -5,6 +5,8 @@ const serverErrorHandler = (err, req, res, next) => {
   if (statusCode === 500) {
     message = 'Произошла какая-то серверная ошибка';
   }
+
+  console.log(message);
   res.status(statusCode).send({ message });
   next();
 };

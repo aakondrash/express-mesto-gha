@@ -5,7 +5,6 @@ const BadRequestError = require('../error_templates/BadRequestError');
 const NotFoundError = require('../error_templates/NotFoundError');
 const UnauthorizedError = require('../error_templates/UnauthorizedError');
 
-const CLIENT_SECRET = "куку";
 
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
@@ -93,12 +92,11 @@ module.exports.setProfile = (req, res, next) => {
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
-    .then((response) => {
-      const {_id: userId} = response;
+    .then(({_id: userId}) => {
       if (userId) {
         const token = jwt.sign(
           {userId},
-          CLIENT_SECRET,
+          'куку',
           {expiresIn: '7d'},
         );
         return res.send({_id: token});

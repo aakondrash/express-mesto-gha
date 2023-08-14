@@ -27,6 +27,8 @@ app.use(express.json());
 app.use('/', signup);
 app.use('/', signin);
 
+app.use(auth);
+
 app.use('/', users);
 app.use('/', cards);
 

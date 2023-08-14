@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const serverErrorHandler = require('./middlewares/serverErrorHandler');
+const NotFoundError = require('./error_templates/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -18,18 +20,28 @@ app.use(
 );
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64d237d698d9214f97efb9b0' // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '64d237d698d9214f97efb9b0' // вставьте сюда _id созданного в предыдущем пункте пользователя
+//   };
 
-  next();
-});
+//   next();
+// });
+
+app.use(auth);
+
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.use('/', users);
 app.use('/', cards);
 
-app.use((req, res, next) => res.status(404).send({message: "Такой страницы не существует"}));
+
+
+app.use((req, res, next) => next(new NotFoundError('Такой страницы не существует')));
+
+app.use(serverErrorHandler);
+
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

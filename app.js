@@ -27,8 +27,8 @@ app.use(express.json());
 app.use('/', signup);
 app.use('/', signin);
 
-app.use('/', auth, users);
-app.use('/', auth, cards);
+app.use('/', users);
+app.use('/', cards);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует.'));

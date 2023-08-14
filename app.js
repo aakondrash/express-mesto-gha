@@ -22,21 +22,19 @@ app.use(
 );
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64d237d698d9214f97efb9b0' // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '64d237d698d9214f97efb9b0' // вставьте сюда _id созданного в предыдущем пункте пользователя
+//   };
 
-  next();
-});
-
-app.use(auth);
+//   next();
+// });
 
 app.post('/signin', login);
 app.post('/signup', createUser);
 
-app.use('/', users);
-app.use('/', cards);
+app.use('/', auth, users);
+app.use('/', auth, cards);
 
 app.use(serverErrorHandler);
 

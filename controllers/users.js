@@ -7,7 +7,6 @@ const UnauthorizedError = require('../error_templates/UnauthorizedError');
 
 const CLIENT_SECRET = "куку";
 
-
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   bcrypt.hash(password, 10)
@@ -44,7 +43,8 @@ module.exports.getAllUsers = (req, res, next) => {
 };
 
 module.exports.getUserInfo = (req, res, next) => {
-  User.findById(req.params.userId)
+  const id = req.params.userId ? req.params.userId : req.user._id;
+  User.findById(id)
       .then((user) => {
         if (!user) return next(new NotFoundError('Пользователь по указанному _id не найден.'));
         return res.status(200).send({ data: user });
@@ -108,5 +108,5 @@ module.exports.login = (req, res, next) => {
       if (err.name === 'UnauthorizedError') return next(UnauthorizedError('Переданы неверные данные при регистрации'));
       return next(err);
     });
-}
+};
 

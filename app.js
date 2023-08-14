@@ -4,11 +4,13 @@ const bodyParser = require('body-parser');
 
 const serverErrorHandler = require('./middlewares/serverErrorHandler');
 const NotFoundError = require('./error_templates/NotFoundError');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
+const { login, createUser } = require('./controllers/users');
 
 const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
 mongoose.connect(mestodbUrl);

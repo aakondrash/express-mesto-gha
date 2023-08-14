@@ -1,7 +1,7 @@
 const serverErrorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
 
-  const message = err.message;
+  let message = err.message;
   if (statusCode === 500) {
     message = 'Произошла какая-то серверная ошибка';
   }

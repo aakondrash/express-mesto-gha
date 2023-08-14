@@ -32,6 +32,7 @@ app.use(auth);
 app.use('/', users);
 app.use('/', cards);
 
+
 app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует.'));
 });

@@ -38,11 +38,11 @@ app.post('/signup', createUser);
 app.use('/', users);
 app.use('/', cards);
 
-
-
-app.use((req, res, next) => next(new NotFoundError('Такой страницы не существует')));
-
 app.use(serverErrorHandler);
+
+app.all('*', (req, res, next) => {
+  next(new NotFoundError('Такой страницы не существует.'));
+});
 
 
 app.listen(PORT, () => {

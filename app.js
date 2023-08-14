@@ -10,7 +10,9 @@ const { PORT = 3000 } = process.env;
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
-const { login, createUser } = require('./controllers/users');
+
+const signup = require('./routes/signup');
+const signin = require('./routes/signin');
 
 const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
 mongoose.connect(mestodbUrl);
@@ -22,27 +24,18 @@ app.use(
 );
 app.use(express.json());
 
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '64d237d698d9214f97efb9b0' // вставьте сюда _id созданного в предыдущем пункте пользователя
-//   };
-
-//   next();
-// });
-
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.use('/', signup);
+app.use('/', signin);
 
 app.use('/', auth, users);
 app.use('/', auth, cards);
 
-app.use(serverErrorHandler);
-
-app.all('*', (req, res, next) => {
+app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует.'));
 });
 
+app.use(serverErrorHandler);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
-})
+});

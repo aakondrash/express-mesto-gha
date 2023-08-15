@@ -95,24 +95,26 @@ module.exports.setProfile = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  console.log(req.body);
   return User.findOne({ email })
     .select('+password')
     .then((user) => {
+      console.log(user);
       if (!user) {
         return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
       }
-      if (user.password === password) {
+
+      bcrypt.compare(password, user.password, (err, comparationResult) => {
+        if (!comparationResult) {
+          return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
+        }
         const token = jwt.sign(
           { _id: user._id },
           'куку',
-          {
-            expiresIn: '7d',
-          },
+          { expiresIn: '7d' },
         );
         return res.status(200).send({ token });
-      }
-      return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
+      });
     })
     .catch(next);
 };
-

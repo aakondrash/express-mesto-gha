@@ -1,23 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const {celebrate, Joi, errors} = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 
 const serverErrorHandler = require('./middlewares/serverErrorHandler');
 const NotFoundError = require('./error_templates/NotFoundError');
 const { auth } = require('./middlewares/auth');
 
-const {URL_REGEXP_PATTERN} = require('./utils/constants');
+const { URL_REGEXP_PATTERN } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 
-const {createUser, login, getUserInfo} = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 
-const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
+const { mestodbUrl = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const app = express();
 
@@ -26,8 +25,9 @@ mongoose.connect(mestodbUrl);
 app.use(helmet());
 
 app.use(
-  express.urlencoded({ extended: true })
+  express.urlencoded({ extended: true, })
 );
+
 app.use(express.json());
 
 app.post(

@@ -17,9 +17,12 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findOne({ _id: req.params._id })
       .orFail(() => {
-        return next(new NotFoundError('Карточка с указанным _id не найдена.'));
+        throw next(new NotFoundError('Карточка с указанным _id не найдена.'));
       })
       .then((card) => {
+          if (!card.owner.equals(req.user._id)) {
+            throw new ForbiddenError('Карточка вам не принадлежит - вы не можете удалить ее.');
+          }
           Card.deleteOne(card).then(() => {
             return res.status(200).send({ data: card });
           }

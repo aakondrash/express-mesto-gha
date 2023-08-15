@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const ConflictError = require('../error_templates/ConflictError');
 const BadRequestError = require('../error_templates/BadRequestError');
 const NotFoundError = require('../error_templates/NotFoundError');
@@ -91,20 +93,24 @@ module.exports.setProfile = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findUserByCredentials(email, password)
-    .then(({_id: userId}) => {
-      if (userId) {
-        const token = jwt.sign(
-          {userId},
-          'куку',
-          {expiresIn: '7d'},
-        );
-        return res.send({_id: token});
+  return User.findOne({ email })
+    .select('+password')
+    .then((user) => {
+      if (!user) {
+        return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
       }
+      if (user.password === password) {
+        const token = jwt.sign(
+          { _id: user._id },
+          'куку',
+          {
+            expiresIn: '7d',
+          },
+        );
+        return res.status(200).send({ token });
+      }
+      return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
     })
-    .catch((err) => {
-      if (err.name === 'UnauthorizedError') return next(UnauthorizedError('Переданы неверные данные при регистрации'));
-      return next(err);
-    });
+    .catch(next);
 };
 

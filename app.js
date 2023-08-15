@@ -14,7 +14,7 @@ const { PORT = 3000 } = process.env;
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 
-const {createUser, login} = require('./controllers/users');
+const {createUser, login, getUserInfo} = require('./controllers/users');
 
 const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
 mongoose.connect(mestodbUrl);
@@ -50,6 +50,8 @@ app.post(
   }),
   login,
 );
+
+app.get('/users/me', getUserInfo);
 
 app.use(auth);
 

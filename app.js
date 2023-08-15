@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const {celebrate, Joi, errors} = require('celebrate');
 
 const serverErrorHandler = require('./middlewares/serverErrorHandler');
@@ -17,9 +18,12 @@ const cards = require('./routes/cards');
 const {createUser, login, getUserInfo} = require('./controllers/users');
 
 const { mestodbUrl = "mongodb://127.0.0.1:27017/mestodb" } = process.env;
-mongoose.connect(mestodbUrl);
 
 const app = express();
+
+mongoose.connect(mestodbUrl);
+
+app.use(helmet());
 
 app.use(
   express.urlencoded({ extended: true })

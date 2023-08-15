@@ -40,7 +40,6 @@ module.exports.getAllUsers = (req, res, next) => {
         return res.status(200).send({ data: user });
       })
       .catch((err) => {
-        if (err.name === 'ValidationError') return next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
         return next(err);
       });
 };
@@ -67,10 +66,12 @@ module.exports.setAvatar = (req, res, next) => {
         { new: true, runValidators: true }
       )
       .then((user) => {
+        if (!user) {
+          return next(new NotFoundError('Пользователь по указанному _id не найден.'));
+        }
         return res.status(200).send({ data: user });
       })
       .catch((err) => {
-        if (err.name === 'NotFoundError') return next(new NotFoundError('Пользователь по указанному _id не найден.'));
         if (err.name === 'ValidationError') return next(new BadRequestError('Переданы некорректные данные при обновлении пользователя.'));
         return next(err);
       });
@@ -84,10 +85,12 @@ module.exports.setProfile = (req, res, next) => {
         { new: true, runValidators: true }
       )
       .then((user) => {
+        if (!user) {
+          return next(new NotFoundError('Пользователь по указанному _id не найден.'));
+        }
         return res.status(200).send({ data: user });
       })
       .catch((err) => {
-        if (err.name === 'NotFoundError') return next(new NotFoundError('Пользователь по указанному _id не найден.'));
         if (err.name === 'ValidationError') return next(new BadRequestError('Переданы некорректные данные при обновлении пользователя.'));
         return next(err);
       });

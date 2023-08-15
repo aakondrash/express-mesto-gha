@@ -25,7 +25,7 @@ mongoose.connect(mestodbUrl);
 app.use(helmet());
 
 app.use(
-  express.urlencoded({ extended: true, })
+  express.urlencoded({ extended: true },)
 );
 
 app.use(express.json());
@@ -69,5 +69,5 @@ app.use((req, res, next) => {
 app.use(serverErrorHandler);
 
 app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
+  console.log(`App listening on port ${PORT}`);
 });

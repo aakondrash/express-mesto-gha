@@ -47,8 +47,7 @@ module.exports.getAllUsers = (req, res, next) => {
 
 module.exports.getUserInfo = (req, res, next) => {
   console.log(req.user);
-  const id = req.params.userId ? req.params.userId : req.user._id;
-  console.log(id);
+  const id = req.params.userId ? req.params.userId : "req.user._id";
   User.findById(id)
       .then((user) => {
         if (!user) return next(new NotFoundError('Пользователь по указанному _id не найден.'));
@@ -101,7 +100,6 @@ module.exports.login = (req, res, next) => {
   return User.findOne({ email })
     .select('+password')
     .then((user) => {
-      console.log(user);
       if (!user) {
         return next(new UnauthorizedError('Переданы неверные логин или пароль.'));
       }

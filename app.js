@@ -5,7 +5,7 @@ const {celebrate, Joi, errors} = require('celebrate');
 
 const serverErrorHandler = require('./middlewares/serverErrorHandler');
 const NotFoundError = require('./error_templates/NotFoundError');
-const auth = require('./middlewares/auth');
+const { auth } = require('./middlewares/auth');
 
 const {URL_REGEXP_PATTERN} = require('./utils/constants');
 
@@ -50,8 +50,6 @@ app.post(
   }),
   login,
 );
-
-app.get('/users/me', getUserInfo);
 
 app.use(auth);
 
